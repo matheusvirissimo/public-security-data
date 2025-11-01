@@ -127,3 +127,21 @@ def calculate_crime_rate(df: pd.DataFrame, population_data: pd.DataFrame):
     # Fazer uma possível validação para que os valores das colunas sejam de um tipo numérico
     df['taxa_criminalidade'] = (df['ocorrencias'] / df['populacao']) * 100000
     return df
+
+def validate_data(df: pd.DataFrame):
+    """
+    Valida integridade dos dados transformados
+    # não sei se esse tá funcionando corretamente
+
+    Returns:
+        Dicionário com estatísticas de validação
+    """
+    validation = {
+        'total_registros': len(df),
+        'valores_nulos': df.isnull().sum().to_dict(),
+        'duplicatas': df.duplicated().sum(),
+        'colunas': list(df.columns)
+    }
+    
+    logger.info(f"Validação: {validation}")
+    return validation
