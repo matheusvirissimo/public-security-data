@@ -33,3 +33,23 @@ def download_csv_ssp(url: str, save_path: str):
         logger.error(f"Erro ao baixar {url}: {e}")
         return None
 
+def extract_from_portal(year: int, month: int, data_dir: str = "data/raw"):
+    """
+    Extrair dados mensais do portal de dados abertos da Secretaria de Segurança de São Paulo 
+    
+    Params:
+        year: Ano dos dados
+        month: Mês dos dados
+        data_dir: Diretório para salvar dados brutos
+    --------
+    Returns:
+        DataFrame (pandas) com os dados extraídos
+    """
+    # URL exemplo (PRECISA AJUSTAR)
+    url = f"https://www.ssp.sp.gov.br/estatistica/dados/{year}/{month:02d}/dados.csv"
+    file_path = f"{data_dir}/{year}_{month:02d}_raw.csv"
+    
+    downloaded = download_csv_ssp(url, file_path)
+    if downloaded:
+        return pd.read_csv(downloaded, encoding='latin1', sep=';') #o utf tem que ser latin se não dá erro
+    return None
