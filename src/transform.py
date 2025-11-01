@@ -85,3 +85,45 @@ def normalize_dates(df: pd.DataFrame, date_columns: List[str]):
     
     return df
 
+def categorize_crimes(df: pd.DataFrame, crime_column: str = 'tipo_crime'):
+    """
+    Categorizar tipos de crime em grupos (violentos, de posse e outros)
+    """
+    df = df.copy()
+    
+    crime_categories = {
+        'Crimes Violentos': ['homicidio', 'latrocinio', 'lesao_corporal', 'estupro'],
+        'Crimes Patrimoniais': ['roubo', 'furto', 'extorsao'],
+        'Crimes de Trânsito': ['acidente_fatal', 'direcao_perigosa'],
+        'Outros': []
+    }
+    
+    #Subfunção para categorização de outros crimes
+    def categorize(crime):
+        crime_lower = str(crime).lower()
+        for category, keywords in crime_categories.items():
+            if any(keyword in crime_lower for keyword in keywords):
+                return category
+        return 'Outros'
+    
+    df['categoria_crime'] = df[crime_column].apply(categorize)
+    return df
+
+def aggregate_by_region(df: pd.DataFrame, region_col: str = 'municipio'):
+    """
+    Unir estatísticas por região
+    """
+    return df.groupby(region_col).agg({
+        'ocorrencias': 'sum',
+        'vitimas': 'sum',
+        # pensar em mais agregações para se realizar
+    }).reset_index()
+
+def calculate_crime_rate(df: pd.DataFrame, population_data: pd.DataFrame):
+    """
+    Calcula da taxa de criminalidade por 100 mil habitantes 
+    """
+    df = df.merge(population_data, on='municipio', how='left')
+    # Fazer uma possível validação para que os valores das colunas sejam de um tipo numérico
+    df['taxa_criminalidade'] = (df['ocorrencias'] / df['populacao']) * 100000
+    return df
