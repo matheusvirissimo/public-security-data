@@ -76,3 +76,22 @@ def extract_local_file(file_path: str, **kwargs):
     except Exception as e:
         logger.error(f"Erro ao ler arquivo {file_path}: {e}")
         return None
+    
+def extract_api_data(endpoint: str, params: dict = None):
+    """
+    Extrair dados da API (se cabível/disponível)
+    
+    Args:
+        endpoint: URL da API
+        params: Parâmetros da requisição
+    
+    Returns:
+        Dados em formato .json
+    """
+    try:
+        response = requests.get(endpoint, params=params, timeout=30)
+        response.raise_for_status()
+        return response.json() # compacta em json a resposta
+    except Exception as e:
+        logger.error(f"Erro ao acessar API {endpoint}: {e}")
+        return None
