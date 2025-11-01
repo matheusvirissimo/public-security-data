@@ -53,3 +53,26 @@ def extract_from_portal(year: int, month: int, data_dir: str = "data/raw"):
     if downloaded:
         return pd.read_csv(downloaded, encoding='latin1', sep=';') #o utf tem que ser latin se não dá erro
     return None
+
+def extract_local_file(file_path: str, **kwargs):
+    """
+    Extrair dados de arquivo local CSV/Excel
+    
+    Args:
+        file_path: Caminho do arquivo
+        **kwargs: Argumentos adicionais para pd.read_csv ou pd.read_excel
+    
+    Returns:
+        DataFrame com os dados
+    """
+    try:
+        if file_path.endswith('.csv'): # caminho terminou com csv
+            return pd.read_csv(file_path, **kwargs) 
+        elif file_path.endswith(('.xlsx', '.xls')):
+            return pd.read_excel(file_path, **kwargs) # caminho terminou em planilha
+        else:
+            logger.error(f"Formato não suportado: {file_path}")
+            return None
+    except Exception as e:
+        logger.error(f"Erro ao ler arquivo {file_path}: {e}")
+        return None
