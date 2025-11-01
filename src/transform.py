@@ -45,3 +45,43 @@ def remove_duplicates(df: pd.DataFrame, subset: List[str] = None):
     
     return df
 
+def handle_missing_values(df: pd.DataFrame, strategy: str = 'drop'):
+    """
+    Tratamento de valores ausentes
+    
+    Params:
+        df: DataFrame
+        strategy: 'drop', 'fill_zero', 'fill_mean', 'fill_median'
+    --------
+    Returns:
+        df: Dataframe sem valores ausentes (ou tratados)
+    """
+    df = df.copy()
+    
+    if strategy == 'drop':
+        df = df.dropna()
+    elif strategy == 'fill_zero':
+        df = df.fillna(0)
+    elif strategy == 'fill_mean':
+        df = df.fillna(df.mean(numeric_only=True))
+    elif strategy == 'fill_median':
+        df = df.fillna(df.median(numeric_only=True))
+    
+    return df
+
+def normalize_dates(df: pd.DataFrame, date_columns: List[str]):
+    """
+    Normalização de datas
+
+    Params: 
+        df: DataFrame
+        date_columns: lista com as datas
+    """
+    df = df.copy()
+    
+    for col in date_columns:
+        if col in df.columns: ## Ver esse if com mais carinho
+            df[col] = pd.to_datetime(df[col], errors='coerce')
+    
+    return df
+
