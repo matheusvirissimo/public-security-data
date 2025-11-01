@@ -89,3 +89,24 @@ def save_metadata(metadata: dict, output_path: str) -> bool:
     except Exception as e:
         logger.error(f"Erro ao salvar metadados: {e}")
         return False
+    
+def create_summary_report(df: pd.DataFrame, output_dir: str):
+    """
+    Criar relatório resumidos dos dados processados
+    """
+    try:
+        summary = {
+            'total_registros': len(df),
+            'periodo': {
+                'inicio': str(df['data'].min()) if 'data' in df.columns else 'N/A',
+                'fim': str(df['data'].max()) if 'data' in df.columns else 'N/A'
+            },
+            'estatisticas': df.describe().to_dict(),
+            'colunas': list(df.columns)
+        }
+        
+        summary_path = f"{output_dir}/summary_report.json"
+        return save_metadata(summary, summary_path)
+    except Exception as e:
+        logger.error(f"Erro ao criar relatório: {e}")
+        return False
