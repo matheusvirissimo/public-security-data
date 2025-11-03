@@ -1,0 +1,47 @@
+{
+  "data_extracao": "2025-11-03 15:08:37",
+  "fonte": "Portal SSP-SP (Dados de Exemplo)",
+  "periodo": {
+    "ano": 2024,
+    "mes_inicio": 1,
+    "mes_fim": 10
+  },
+  "dados": {
+    "total_registros": 360,
+    "total_colunas": 8,
+    "colunas": [
+      "ANO",
+      "MES",
+      "MUNICIPIO",
+      "TIPO_CRIME",
+      "OCORRENCIAS",
+      "VITIMAS",
+      "LATITUDE",
+      "LONGITUDE"
+    ],
+    "municipios": [
+      "São Paulo",
+      "Campinas",
+      "Santos",
+      "Guarulhos",
+      "Ribeirão Preto"
+    ],
+    "tipos_crime": [
+      "Furto",
+      "Roubo",
+      "Homicídio",
+      "Lesão Corporal",
+      "Latrocínio",
+      "Estupro"
+    ]
+  },
+  "qualidade": {
+    "valores_nulos": 0,
+    "duplicatas": 0
+  },
+  "estatisticas": {
+    "total_ocorrencias": 93460,
+    "total_vitimas": 54262,
+    "media_ocorrencias_mes": 7788.333333333333
+  }
+}
